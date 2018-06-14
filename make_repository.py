@@ -1,24 +1,26 @@
 import json
 import re
-class Repository:
 
+class Repository:
     def __init__(self):
         with open('./data/raw/raw.json', 'r') as f:
             self.rawParagraphs = json.load(f)
-
         with open("./sherlock.txt",'r') as f:
-            f = f.read()
-        reg=re.sub(r'[^ \s a-z0-9]',"",f.lower())
+            doc_str = f.read()
+        reg = re.sub(r'[^ \s a-z0-9]',"", doc_str.lower())
         # f = f.lower().replace('",;/\})({.:/?!][',"")
-        self.list = reg.split()
-        self.list = sorted(list(set(self.list)))
+        self.word_list = reg.split()
+        self.word_list = sorted(list(set(self.word_list)))
         self.vocabulary = {}
         self.index = {}
-        self.docs={}
-    def processParagraphs(self):
-        self.processedParagraphs = {key:re.sub(r'[^ \s a-z0-9]',"",value.lower()) for (key,value) in self.rawParagraphs.items()}
+        self.docs = {}
 
-    def saveInJSON(self,make=False):
+    def processParagraphs(self):
+        self.processedParagraphs = {}
+        for key, value in self.rawParagraphs.items():
+            self.processedParagraphs[key] = re.sub(r'[^ \s a-z0-9]', "", value.lower())
+
+    def saveInJSON(self, make=False):
         if make:
             self.processParagraphs()
             self.makeVocabulary()
@@ -28,10 +30,8 @@ class Repository:
             json.dump(self.docs, fp, indent=4)
         with open('./data/repo/vocab.json', 'w') as fp:
             json.dump(self.vocabulary, fp, sort_keys=True, indent=4)
-
         with open('./data/repo/inv_vocab.json', 'w') as fp:
             json.dump(self.inv_dict, fp, sort_keys=True, indent=4)
-
 
     def makeVocabulary(self):
         self.vocabulary = {key:self.list[key] for key in range(len(self.list))}
@@ -60,12 +60,6 @@ class Repository:
         for (doc_id,doc) in self.docs.items():
             for i in doc[1]:
                 self.index[i[0]].append((doc_id,i[1]))
-
-
-
-                
-                        
-                        
 
 if __name__ == "__main__":
     repo = Repository()

@@ -1,10 +1,9 @@
 import json
 
-
 class Extractor:
 
     def __init__(self,filepath):
-        with open(filepath, "r") as f:
+        with open(filepath, "r", encoding='utf8') as f:
             self.string = f.read()
         # self.string = f.lower().replace(",.:/?!][","")
 

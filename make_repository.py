@@ -3,9 +3,9 @@ import re
 
 class Repository:
     def __init__(self):
-        with open('./data/raw/raw.json', 'r') as f:
+        with open('./data/raw/raw.json', 'r', encoding='utf8') as f:
             self.rawParagraphs = json.load(f)
-        with open("./sherlock.txt",'r') as f:
+        with open("./sherlock.txt",'r', encoding='utf8') as f:
             doc_str = f.read()
         reg = re.sub(r'[^ \s a-z0-9]',"", doc_str.lower())
         # f = f.lower().replace('",;/\})({.:/?!][',"")
@@ -34,7 +34,7 @@ class Repository:
             json.dump(self.inv_dict, fp, sort_keys=True, indent=4)
 
     def makeVocabulary(self):
-        self.vocabulary = {key:self.list[key] for key in range(len(self.list))}
+        self.vocabulary = {key:self.word_list[key] for key in range(len(self.word_list))}
         self.inv_dict = {v:k for (k,v) in self.vocabulary.items()}
     
     def makeDocs(self):

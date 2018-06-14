@@ -27,12 +27,12 @@ if __name__ == "__main__":
     running = True
     while running:
         print("##########################################")
-        user_input=input("Press (0) to search:\nPress(1) to exit: ")
+        user_input=input("Press (0) to search:\nPress (1) to exit: ")
         print("##########################################")
         if user_input == "0":
             query=input("Insert your query: ")
             s = SearchEngine()
-            s.search(query)
+            s.search(query.lower())
             
         else:
             running = False
